@@ -1,9 +1,5 @@
 package com.self.tank;
 
-import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
 /**
  * @Author: ZST
  * @Date: 2020/6/1
