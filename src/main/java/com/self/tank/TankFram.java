@@ -11,7 +11,11 @@ import java.awt.event.WindowEvent;
  * @Date: 2020/6/1
  */
 public class TankFram extends Frame {
-    int x = 200, y = 200 ;
+    int x = 200, y = 200;
+    Dir dir = Dir.DOWN;
+
+    private static final int SPEED = 10;
+
     public TankFram() {
         setResizable(false);
         setVisible(true);
@@ -29,25 +33,94 @@ public class TankFram extends Frame {
         });
         addKeyListener(new MyKeyListener());
     }
+
     @Override
     public void paint(Graphics g) {
-        System.out.println("dongqisdfd");
-        g.fillRect(x, y, 20,20);
-        x = x + 10;
-        y = y + 10;
+        g.fillRect(x, y, 50, 50);
+
+        switch (dir) {
+            case LEFT:
+                x -= SPEED;
+                break;
+            case UP:
+                y -= SPEED;
+                break;
+            case RIGHT:
+                x += SPEED;
+                break;
+            case DOWN:
+                y += SPEED;
+                break;
+            default:
+                break;
+        }
     }
 
-    class MyKeyListener extends KeyAdapter {
 
+    class MyKeyListener extends KeyAdapter {
+        boolean bL = false;
+        boolean bU = false;
+        boolean bR = false;
+        boolean bD = false;
 
         @Override
         public void keyPressed(KeyEvent e) {
-            System.out.println("pressed");
+            int key = e.getKeyCode();
+            switch (key) {
+                case KeyEvent.VK_LEFT:
+                    bL = true;
+                    break;
+                case KeyEvent.VK_UP:
+                    bU = true;
+                    break;
+                case KeyEvent.VK_RIGHT:
+                    bR = true;
+                    break;
+                case KeyEvent.VK_DOWN:
+                    bD = true;
+                    break;
+                default:
+                    break;
+            }
+            setMainTankDir();
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
-            System.out.println("released");
+            int key = e.getKeyCode();
+            switch (key) {
+                case KeyEvent.VK_LEFT:
+                    bL = false;
+                    break;
+                case KeyEvent.VK_UP:
+                    bU = false;
+                    break;
+                case KeyEvent.VK_RIGHT:
+                    bR = false;
+                    break;
+                case KeyEvent.VK_DOWN:
+                    bD = false;
+                    break;
+
+                default:
+                    break;
+            }
+            setMainTankDir();
+        }
+
+        private void setMainTankDir() {
+            if (bU) {
+                dir = Dir.UP;
+            }
+            if (bL) {
+                dir = Dir.LEFT;
+            }
+            if (bD) {
+                dir = Dir.DOWN;
+            }
+            if (bR) {
+                dir = Dir.RIGHT;
+            }
         }
     }
 }
