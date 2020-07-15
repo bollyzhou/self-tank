@@ -11,7 +11,6 @@ public class Tank {
     private int x, y;
     private Dir dir = Dir.DOWN;
     private static final int SPEED = 10;
-
     private boolean moving = false;
 
     public Dir getDir() {
@@ -38,7 +37,10 @@ public class Tank {
     }
 
     public void paint(Graphics g) {
+        Color c = g.getColor();
+        g.setColor(Color.YELLOW);
         g.fillRect(x, y, 50, 50);
+        g.setColor(c);
 
         move();
     }
