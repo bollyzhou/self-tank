@@ -12,6 +12,15 @@ public class Tank {
     private Dir dir = Dir.DOWN;
     private static final int SPEED = 10;
     private boolean moving = false;
+    private TankFram tankFram = null;
+
+    public TankFram getTankFram() {
+        return tankFram;
+    }
+
+    public void setTankFram(TankFram tankFram) {
+        this.tankFram = tankFram;
+    }
 
     public Dir getDir() {
         return dir;
@@ -29,11 +38,12 @@ public class Tank {
         this.moving = moving;
     }
 
-    public Tank(int x, int y, Dir dir) {
+    public Tank(int x, int y, Dir dir, TankFram tankFram) {
         super();
         this.x = x;
         this.y = y;
         this.dir = dir;
+        this.tankFram = tankFram;
     }
 
     public void paint(Graphics g) {
@@ -67,4 +77,7 @@ public class Tank {
         }
     }
 
+    public void fire() {
+        tankFram.bullets.add(new Bullet(this.x, this.y, this.dir, tankFram));
+    }
 }
