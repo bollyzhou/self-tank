@@ -17,8 +17,7 @@ public class TankFram extends Frame {
     Tank myTank = new Tank(400, 500, Dir.UP, Group.GOOD, this);
     List<Bullet> bullets = new ArrayList<>();
     List<Tank> enemyTanks = new ArrayList<>();
-    static final int GAME_WIDTH = 1080, GAME_HEIGHT = 960;
-    Explode explode = new Explode(100, 100, this);
+    static final int GAME_WIDTH = 1080, GAME_HEIGHT = 800;
     List<Explode> explodes = new ArrayList<>();
     public TankFram() {
         setResizable(false);
@@ -44,6 +43,7 @@ public class TankFram extends Frame {
         g.setColor(Color.WHITE);
         g.drawString("子弹的数量:" + bullets.size(), 10, 60);
         g.drawString("敌人的数量:" + enemyTanks.size(), 10, 80);
+        g.drawString("炸弹的数量:" + explodes.size(), 10, 100);
         g.setColor(c);
         myTank.paint(g);
         for (Tank t : enemyTanks) {
@@ -52,16 +52,18 @@ public class TankFram extends Frame {
         for (Bullet b : bullets) {
             b.paint(g);
         }
-        explode.paint(g);
+        for (Explode explode : explodes) {
+            explode.paint(g);
+        }
         // 子弹是否打中坦克
-        for (int i = 0; i < bullets.size(); i++) {
-            for (int j = 0; j < enemyTanks.size(); j++) {
-                bullets.get(i).collideWith(enemyTanks.get(j));
+        for (Bullet bullet : bullets) {
+            for (Tank enemyTank : enemyTanks) {
+                bullet.collideWith(enemyTank);
             }
         }
 
-        // 消除内存占用
-        bullets.removeIf(b -> !b.living);
+//        // 消除内存占用
+//        bullets.removeIf(b -> !b.living);
 
     }
 

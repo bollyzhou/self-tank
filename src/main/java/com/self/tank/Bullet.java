@@ -16,6 +16,7 @@ public class Bullet {
 		this.x = x;
 		this.y = y;
 		this.group = group;
+		this.tankFram = tankFram;
 		this.dir = dir;
 	}
 	
@@ -74,7 +75,9 @@ public class Bullet {
         if (br.intersects(tr)) {
             this.die();
             tank.die();
-
+            int eX = tank.getX() + Tank.WIDTH/2 - Explode.WIDTH/2;
+            int eY = tank.getY() + Tank.HEIGHT/2 - Explode.HEIGHT/2;
+            tankFram.explodes.add(new Explode(eX, eY, tankFram));
         }
     }
 

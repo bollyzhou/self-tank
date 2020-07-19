@@ -11,7 +11,8 @@ public class Tank {
     public static int WIDTH = ResourceMgr.goodTankU.getWidth(), HEIGHT = ResourceMgr.goodTankU.getHeight();
     private int x, y;
     private Dir dir = Dir.DOWN;
-    private static final int SPEED = 1;
+    private static final int BAD_SPEED = 1;
+    private static final int GOOD_SPEED = 10;
     private boolean moving = true;
     private TankFram tankFram = null;
     private boolean living = true;
@@ -82,16 +83,16 @@ public class Tank {
         }
         switch (dir) {
             case LEFT:
-                g.drawImage(ResourceMgr.goodTankL, x, y, null);
+                g.drawImage(group.equals(Group.BAD) ? ResourceMgr.badTankL : ResourceMgr.goodTankL, x, y, null);
                 break;
             case UP:
-                g.drawImage(ResourceMgr.goodTankU, x, y, null);
+                g.drawImage(group.equals(Group.BAD) ? ResourceMgr.badTankU : ResourceMgr.goodTankU, x, y, null);
                 break;
             case RIGHT:
-                g.drawImage(ResourceMgr.goodTankR, x, y, null);
+                g.drawImage(group.equals(Group.BAD) ? ResourceMgr.badTankR : ResourceMgr.goodTankR, x, y, null);
                 break;
             case DOWN:
-                g.drawImage(ResourceMgr.goodTankD, x, y, null);
+                g.drawImage(group.equals(Group.BAD) ? ResourceMgr.badTankD : ResourceMgr.goodTankD, x, y, null);
                 break;
             default:
                 break;
@@ -103,26 +104,59 @@ public class Tank {
         if (!moving) {
             return;
         }
+        if (group.equals(Group.GOOD)) {
+           changeSpeed(GOOD_SPEED);
+        } else {
+            changeSpeed(BAD_SPEED);
+        }
+        if (group.equals(Group.BAD) && random.nextInt(100) > 95) {
+            this.fire();
+        }
+        if (group.equals(Group.BAD) && random.nextInt(100) > 95) {
+            randomDir();
+        }
+
+        boundsCheck();
+
+    }
+
+    private void boundsCheck() {
+        if (x >= TankFram.GAME_WIDTH - WIDTH) {
+            x = TankFram.GAME_WIDTH - WIDTH;
+        }
+        if (y >= TankFram.GAME_HEIGHT - HEIGHT) {
+            y = TankFram.GAME_HEIGHT - HEIGHT;
+        }
+        if (x <= 0) {
+            x = 0;
+        }
+        if (y <= 30) {
+            y = 30;
+        }
+    }
+
+    private void changeSpeed(int speed) {
         switch (dir) {
             case LEFT:
-                x -= SPEED;
+                x -= speed;
                 break;
             case UP:
-                y -= SPEED;
+                y -= speed;
                 break;
             case RIGHT:
-                x += SPEED;
+                x += speed;
                 break;
             case DOWN:
-                y += SPEED;
+                y += speed;
                 break;
             default:
                 break;
         }
+    }
 
-        if (random.nextInt(10) > 8) {
-            this.fire();
-        }
+
+    private void randomDir() {
+        dir = Dir.values()[random.nextInt(Dir.values().length)];
     }
 
     public void fire() {
