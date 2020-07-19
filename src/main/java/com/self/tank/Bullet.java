@@ -8,7 +8,7 @@ public class Bullet {
 	
 	private int x, y;
 	private Dir dir;
-	boolean live = true;
+	boolean living = true;
 	private TankFram tankFram = null;
 	
 	public Bullet(int x, int y, Dir dir, TankFram tankFram) {
@@ -18,7 +18,7 @@ public class Bullet {
 	}
 	
 	public void paint(Graphics g) {
-	    if (!live) {
+	    if (!living) {
             tankFram.bullets.remove(this);
         }
         switch (dir) {
@@ -59,7 +59,21 @@ public class Bullet {
 			default:break;
 		}
 		if (x < 0 || y < 0 || x > TankFram.GAME_WIDTH || y > TankFram.GAME_HEIGHT ) {
-            live = false;
+            living = false;
         }
 	}
+
+    public void collideWith(Tank tank) {
+	    Rectangle br = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
+        Rectangle tr = new Rectangle(tank.getX(), tank.getY(), Tank.WIDTH, Tank.HEIGHT);
+        if (br.intersects(tr)) {
+            this.die();
+            tank.die();
+
+        }
+    }
+
+    private void die() {
+        this.living = false;
+    }
 }

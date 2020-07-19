@@ -14,8 +14,9 @@ import java.util.List;
  */
 public class TankFram extends Frame {
 
-    Tank myTank = new Tank(200, 200, Dir.DOWN, this);
+    Tank myTank = new Tank(400, 500, Dir.UP, this);
     List<Bullet> bullets = new ArrayList<>();
+    List<Tank> enemyTanks = new ArrayList<>();
     static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
     public TankFram() {
         setResizable(false);
@@ -40,14 +41,26 @@ public class TankFram extends Frame {
         Color c = g.getColor();
         g.setColor(Color.WHITE);
         g.drawString("子弹的数量:" + bullets.size(), 10, 60);
+        g.drawString("敌人的数量:" + enemyTanks.size(), 10, 80);
         g.setColor(c);
         myTank.paint(g);
-        // 消除内存占用
-        bullets.removeIf(b -> !b.live);
-
+        for (Tank t : enemyTanks) {
+            t.paint(g);
+        }
         for (Bullet b : bullets) {
             b.paint(g);
         }
+
+        // 子弹是否打中坦克
+        for (int i = 0; i < bullets.size(); i++) {
+            for (int j = 0; j < enemyTanks.size(); j++) {
+                bullets.get(i).collideWith(enemyTanks.get(j));
+            }
+        }
+
+        // 消除内存占用
+        bullets.removeIf(b -> !b.living);
+
     }
 
     Image offScreenImage = null;

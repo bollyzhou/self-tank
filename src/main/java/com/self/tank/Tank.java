@@ -11,8 +11,25 @@ public class Tank {
     private int x, y;
     private Dir dir = Dir.DOWN;
     private static final int SPEED = 10;
-    private boolean moving = false;
+    private boolean moving = true;
     private TankFram tankFram = null;
+    private boolean living = true;
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
 
     public TankFram getTankFram() {
         return tankFram;
@@ -47,7 +64,9 @@ public class Tank {
     }
 
     public void paint(Graphics g) {
-
+        if (!living) {
+            tankFram.enemyTanks.remove(this);
+        }
         switch (dir) {
             case LEFT:
                 g.drawImage(ResourceMgr.goodTankL, x, y, null);
@@ -93,5 +112,9 @@ public class Tank {
         int bX = x + Tank.WIDTH/2 - Bullet.WIDTH/2;
         int bY = y + Tank.HEIGHT/2 - Bullet.HEIGHT/2;
         tankFram.bullets.add(new Bullet(bX, bY, this.dir, tankFram));
+    }
+
+    public void die() {
+        this.living = false;
     }
 }
