@@ -18,6 +18,7 @@ public class Tank {
     private boolean living = true;
     private Group group;
     private Random random = new Random();
+    Rectangle rectangle = new Rectangle();
 
 
     public Group getGroup() {
@@ -68,6 +69,14 @@ public class Tank {
         this.moving = moving;
     }
 
+    public Rectangle getRectangle() {
+        return rectangle;
+    }
+
+    public void setRectangle(Rectangle rectangle) {
+        this.rectangle = rectangle;
+    }
+
     public Tank(int x, int y, Dir dir, Group group, TankFram tankFram) {
         super();
         this.x = x;
@@ -75,6 +84,11 @@ public class Tank {
         this.dir = dir;
         this.group = group;
         this.tankFram = tankFram;
+
+        rectangle.x = this.x;
+        rectangle.y = this.y;
+        rectangle.width = WIDTH;
+        rectangle.height = HEIGHT;
     }
 
     public void paint(Graphics g) {
@@ -115,6 +129,11 @@ public class Tank {
         if (group.equals(Group.BAD) && random.nextInt(100) > 95) {
             randomDir();
         }
+
+        rectangle.x = this.x;
+        rectangle.y = this.y;
+        rectangle.width = WIDTH;
+        rectangle.height = HEIGHT;
 
         boundsCheck();
 

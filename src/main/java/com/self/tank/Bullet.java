@@ -12,12 +12,19 @@ public class Bullet {
 	private TankFram tankFram = null;
 	private Group group;
 
+	Rectangle rectangle = new Rectangle();
+
     public Bullet(int x, int y, Dir dir, Group group, TankFram tankFram) {
 		this.x = x;
 		this.y = y;
 		this.group = group;
 		this.tankFram = tankFram;
 		this.dir = dir;
+
+		rectangle.x = this.x;
+		rectangle.y = this.y;
+		rectangle.width = WIDTH;
+		rectangle.height = HEIGHT;
 	}
 	
 	public void paint(Graphics g) {
@@ -64,15 +71,20 @@ public class Bullet {
 		if (x < 0 || y < 0 || x > TankFram.GAME_WIDTH || y > TankFram.GAME_HEIGHT ) {
             living = false;
         }
+        rectangle.x = this.x;
+        rectangle.y = this.y;
+        rectangle.width = WIDTH;
+        rectangle.height = HEIGHT;
 	}
 
     public void collideWith(Tank tank) {
         if (this.group.equals(tank.getGroup())) {
             return;
         }
-        Rectangle br = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
-        Rectangle tr = new Rectangle(tank.getX(), tank.getY(), Tank.WIDTH, Tank.HEIGHT);
-        if (br.intersects(tr)) {
+        // 每次碰撞都要创建，将retangle 放到创建坦克和子弹到地方
+//        Rectangle br = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
+//        Rectangle tr = new Rectangle(tank.getX(), tank.getY(), Tank.WIDTH, Tank.HEIGHT);
+        if (tank.getRectangle().intersects(rectangle)) {
             this.die();
             tank.die();
             int eX = tank.getX() + Tank.WIDTH/2 - Explode.WIDTH/2;
