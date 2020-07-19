@@ -1,6 +1,7 @@
 package com.self.tank;
 
 import java.awt.*;
+import java.util.Random;
 
 /**
  * @Author: ZST
@@ -10,10 +11,21 @@ public class Tank {
     public static int WIDTH = ResourceMgr.goodTankU.getWidth(), HEIGHT = ResourceMgr.goodTankU.getHeight();
     private int x, y;
     private Dir dir = Dir.DOWN;
-    private static final int SPEED = 10;
+    private static final int SPEED = 1;
     private boolean moving = true;
     private TankFram tankFram = null;
     private boolean living = true;
+    private Group group;
+    private Random random = new Random();
+
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
 
     public int getX() {
         return x;
@@ -55,11 +67,12 @@ public class Tank {
         this.moving = moving;
     }
 
-    public Tank(int x, int y, Dir dir, TankFram tankFram) {
+    public Tank(int x, int y, Dir dir, Group group, TankFram tankFram) {
         super();
         this.x = x;
         this.y = y;
         this.dir = dir;
+        this.group = group;
         this.tankFram = tankFram;
     }
 
@@ -106,12 +119,16 @@ public class Tank {
             default:
                 break;
         }
+
+        if (random.nextInt(10) > 8) {
+            this.fire();
+        }
     }
 
     public void fire() {
         int bX = x + Tank.WIDTH/2 - Bullet.WIDTH/2;
         int bY = y + Tank.HEIGHT/2 - Bullet.HEIGHT/2;
-        tankFram.bullets.add(new Bullet(bX, bY, this.dir, tankFram));
+        tankFram.bullets.add(new Bullet(bX, bY, this.dir, this.group, tankFram));
     }
 
     public void die() {

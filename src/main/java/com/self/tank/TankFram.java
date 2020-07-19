@@ -14,10 +14,12 @@ import java.util.List;
  */
 public class TankFram extends Frame {
 
-    Tank myTank = new Tank(400, 500, Dir.UP, this);
+    Tank myTank = new Tank(400, 500, Dir.UP, Group.GOOD, this);
     List<Bullet> bullets = new ArrayList<>();
     List<Tank> enemyTanks = new ArrayList<>();
-    static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
+    static final int GAME_WIDTH = 1080, GAME_HEIGHT = 960;
+    Explode explode = new Explode(100, 100, this);
+    List<Explode> explodes = new ArrayList<>();
     public TankFram() {
         setResizable(false);
         setVisible(true);
@@ -50,7 +52,7 @@ public class TankFram extends Frame {
         for (Bullet b : bullets) {
             b.paint(g);
         }
-
+        explode.paint(g);
         // 子弹是否打中坦克
         for (int i = 0; i < bullets.size(); i++) {
             for (int j = 0; j < enemyTanks.size(); j++) {

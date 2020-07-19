@@ -3,17 +3,19 @@ package com.self.tank;
 import java.awt.*;
 
 public class Bullet {
-	private static final int SPEED = 20;
+	private static final int SPEED = 5;
 	public static int WIDTH = ResourceMgr.bulletU.getWidth(), HEIGHT = ResourceMgr.bulletU.getHeight();
 	
 	private int x, y;
 	private Dir dir;
 	boolean living = true;
 	private TankFram tankFram = null;
-	
-	public Bullet(int x, int y, Dir dir, TankFram tankFram) {
+	private Group group;
+
+    public Bullet(int x, int y, Dir dir, Group group, TankFram tankFram) {
 		this.x = x;
 		this.y = y;
+		this.group = group;
 		this.dir = dir;
 	}
 	
@@ -64,7 +66,10 @@ public class Bullet {
 	}
 
     public void collideWith(Tank tank) {
-	    Rectangle br = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
+        if (this.group.equals(tank.getGroup())) {
+            return;
+        }
+        Rectangle br = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
         Rectangle tr = new Rectangle(tank.getX(), tank.getY(), Tank.WIDTH, Tank.HEIGHT);
         if (br.intersects(tr)) {
             this.die();
