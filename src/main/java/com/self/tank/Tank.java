@@ -7,7 +7,7 @@ import java.awt.*;
  * @Date: 2020/7/8
  */
 public class Tank {
-
+    public static int WIDTH = ResourceMgr.goodTankU.getWidth(), HEIGHT = ResourceMgr.goodTankU.getHeight();
     private int x, y;
     private Dir dir = Dir.DOWN;
     private static final int SPEED = 10;
@@ -47,11 +47,23 @@ public class Tank {
     }
 
     public void paint(Graphics g) {
-        Color c = g.getColor();
-        g.setColor(Color.YELLOW);
-        g.fillRect(x, y, 50, 50);
-        g.setColor(c);
 
+        switch (dir) {
+            case LEFT:
+                g.drawImage(ResourceMgr.goodTankL, x, y, null);
+                break;
+            case UP:
+                g.drawImage(ResourceMgr.goodTankU, x, y, null);
+                break;
+            case RIGHT:
+                g.drawImage(ResourceMgr.goodTankR, x, y, null);
+                break;
+            case DOWN:
+                g.drawImage(ResourceMgr.goodTankD, x, y, null);
+                break;
+            default:
+                break;
+        }
         move();
     }
 
@@ -78,6 +90,8 @@ public class Tank {
     }
 
     public void fire() {
-        tankFram.bullets.add(new Bullet(this.x, this.y, this.dir, tankFram));
+        int bX = x + Tank.WIDTH/2 - Bullet.WIDTH/2;
+        int bY = y + Tank.HEIGHT/2 - Bullet.HEIGHT/2;
+        tankFram.bullets.add(new Bullet(bX, bY, this.dir, tankFram));
     }
 }
