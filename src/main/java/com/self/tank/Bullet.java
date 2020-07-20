@@ -81,7 +81,7 @@ public class Bullet {
         if (this.group.equals(tank.getGroup())) {
             return;
         }
-        // 每次碰撞都要创建，将retangle 放到创建坦克和子弹到地方
+        // 每次碰撞都要创建，将retangle 放到创建坦克和子弹到地方，当子弹销毁的时候 rectangle 即销毁
 //        Rectangle br = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
 //        Rectangle tr = new Rectangle(tank.getX(), tank.getY(), Tank.WIDTH, Tank.HEIGHT);
         if (tank.getRectangle().intersects(rectangle)) {
