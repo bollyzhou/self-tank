@@ -9,16 +9,17 @@ import java.util.Random;
  */
 public class Tank {
     public static int WIDTH = ResourceMgr.goodTankU.getWidth(), HEIGHT = ResourceMgr.goodTankU.getHeight();
-    private int x, y;
+    int x, y;
     private Dir dir = Dir.DOWN;
     private static final int BAD_SPEED = 1;
     private static final int GOOD_SPEED = 10;
     private boolean moving = true;
-    private TankFram tankFram = null;
+    GameModle gm = null;
     private boolean living = true;
     private Group group;
     private Random random = new Random();
     Rectangle rectangle = new Rectangle();
+    FireStrategy fs;
 
 
     public Group getGroup() {
@@ -45,12 +46,12 @@ public class Tank {
         this.y = y;
     }
 
-    public TankFram getTankFram() {
-        return tankFram;
+    public GameModle getGm() {
+        return gm;
     }
 
-    public void setTankFram(TankFram tankFram) {
-        this.tankFram = tankFram;
+    public void setGm(GameModle gm) {
+        this.gm = gm;
     }
 
     public Dir getDir() {
@@ -77,23 +78,29 @@ public class Tank {
         this.rectangle = rectangle;
     }
 
-    public Tank(int x, int y, Dir dir, Group group, TankFram tankFram) {
+    public Tank(int x, int y, Dir dir, Group group, GameModle gm) {
         super();
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.group = group;
-        this.tankFram = tankFram;
+        this.gm = gm;
 
         rectangle.x = this.x;
         rectangle.y = this.y;
         rectangle.width = WIDTH;
         rectangle.height = HEIGHT;
+
+        if (this.group.equals(Group.GOOD)) {
+            fs = new FourDirFireStrategy();
+        } else {
+            fs = new DefaultFireStrategy();
+        }
     }
 
     public void paint(Graphics g) {
         if (!living) {
-            tankFram.enemyTanks.remove(this);
+            gm.enemyTanks.remove(this);
         }
         switch (dir) {
             case LEFT:
@@ -179,9 +186,7 @@ public class Tank {
     }
 
     public void fire() {
-        int bX = x + Tank.WIDTH/2 - Bullet.WIDTH/2;
-        int bY = y + Tank.HEIGHT/2 - Bullet.HEIGHT/2;
-        tankFram.bullets.add(new Bullet(bX, bY, this.dir, this.group, tankFram));
+        fs.fire(this);
     }
 
     public void die() {

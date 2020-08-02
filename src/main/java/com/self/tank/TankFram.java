@@ -5,27 +5,21 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @Author: ZST
  * @Date: 2020/6/1
  */
 public class TankFram extends Frame {
-
-    Tank myTank = new Tank(400, 500, Dir.UP, Group.GOOD, this);
-    List<Bullet> bullets = new ArrayList<>();
-    List<Tank> enemyTanks = new ArrayList<>();
     static final int GAME_WIDTH = 1080, GAME_HEIGHT = 800;
-    List<Explode> explodes = new ArrayList<>();
+    GameModle gm = new GameModle();
+
     public TankFram() {
         setResizable(false);
         setVisible(true);
         setTitle("Self-Tank");
         setSize(GAME_WIDTH, GAME_HEIGHT);
         setResizable(false);
-
 
         addWindowListener(new WindowAdapter() {
 
@@ -39,32 +33,7 @@ public class TankFram extends Frame {
 
     @Override
     public void paint(Graphics g) {
-        Color c = g.getColor();
-        g.setColor(Color.WHITE);
-        g.drawString("子弹的数量:" + bullets.size(), 10, 60);
-        g.drawString("敌人的数量:" + enemyTanks.size(), 10, 80);
-        g.drawString("炸弹的数量:" + explodes.size(), 10, 100);
-        g.setColor(c);
-        myTank.paint(g);
-        for (Tank t : enemyTanks) {
-            t.paint(g);
-        }
-        for (Bullet b : bullets) {
-            b.paint(g);
-        }
-        for (Explode explode : explodes) {
-            explode.paint(g);
-        }
-        // 子弹是否打中坦克
-        for (Bullet bullet : bullets) {
-            for (Tank enemyTank : enemyTanks) {
-                bullet.collideWith(enemyTank);
-            }
-        }
-
-//        // 消除内存占用
-//        bullets.removeIf(b -> !b.living);
-
+        gm.paint(g);
     }
 
     Image offScreenImage = null;
@@ -129,7 +98,7 @@ public class TankFram extends Frame {
                     bD = false;
                     break;
                 case KeyEvent.VK_CONTROL:
-                    myTank.fire();
+                    gm.getMainTank().fire();
                     break;
                 default:
                     break;
@@ -139,20 +108,20 @@ public class TankFram extends Frame {
 
         private void setMainTankDir() {
             if (!bL && !bU && !bR && !bD) {
-                myTank.setMoving(false);
+                gm.getMainTank().setMoving(false);
             } else {
-                myTank.setMoving(true);
+                gm.getMainTank().setMoving(true);
                 if (bU) {
-                    myTank.setDir(Dir.UP);
+                    gm.getMainTank().setDir(Dir.UP);
                 }
                 if (bL) {
-                    myTank.setDir(Dir.LEFT);
+                    gm.getMainTank().setDir(Dir.LEFT);
                 }
                 if (bD) {
-                    myTank.setDir(Dir.DOWN);
+                    gm.getMainTank().setDir(Dir.DOWN);
                 }
                 if (bR) {
-                    myTank.setDir(Dir.RIGHT);
+                    gm.getMainTank().setDir(Dir.RIGHT);
                 }
             }
         }

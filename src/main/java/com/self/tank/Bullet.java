@@ -1,6 +1,7 @@
 package com.self.tank;
 
 import java.awt.*;
+import java.util.Iterator;
 
 public class Bullet {
 	private static final int SPEED = 5;
@@ -9,27 +10,28 @@ public class Bullet {
 	private int x, y;
 	private Dir dir;
 	boolean living = true;
-	private TankFram tankFram = null;
+	private GameModle gm = null;
 	private Group group;
 
 	Rectangle rectangle = new Rectangle();
 
-    public Bullet(int x, int y, Dir dir, Group group, TankFram tankFram) {
+    public Bullet(int x, int y, Dir dir, Group group, GameModle gm) {
 		this.x = x;
 		this.y = y;
 		this.group = group;
-		this.tankFram = tankFram;
+		this.gm = gm;
 		this.dir = dir;
 
 		rectangle.x = this.x;
 		rectangle.y = this.y;
 		rectangle.width = WIDTH;
 		rectangle.height = HEIGHT;
+		gm.bullets.add(this);
 	}
 	
 	public void paint(Graphics g) {
 	    if (!living) {
-            tankFram.bullets.remove(this);
+            saveRemove();
         }
         switch (dir) {
             case LEFT:
@@ -50,8 +52,12 @@ public class Bullet {
 		
 		move();
 	}
-	
-	private void move() {
+
+    private void saveRemove() {
+        gm.bullets.removeIf(this::equals);
+    }
+
+    private void move() {
 		
 		switch (dir) {
 		case LEFT:
@@ -89,7 +95,7 @@ public class Bullet {
             tank.die();
             int eX = tank.getX() + Tank.WIDTH/2 - Explode.WIDTH/2;
             int eY = tank.getY() + Tank.HEIGHT/2 - Explode.HEIGHT/2;
-            tankFram.explodes.add(new Explode(eX, eY, tankFram));
+            gm.explodes.add(new Explode(eX, eY, gm));
         }
     }
 
