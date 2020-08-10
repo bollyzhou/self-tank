@@ -1,4 +1,10 @@
-package com.self.tank;
+package com.self.tank.strategy;
+
+import com.self.tank.Audio;
+import com.self.tank.Bullet;
+import com.self.tank.Group;
+import com.self.tank.Tank;
+import com.self.tank.strategy.FireStrategy;
 
 /**
  * @Author: ZST

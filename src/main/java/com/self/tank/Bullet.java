@@ -1,13 +1,11 @@
 package com.self.tank;
 
 import java.awt.*;
-import java.util.Iterator;
 
-public class Bullet {
+public class Bullet extends GameObject {
 	private static final int SPEED = 5;
 	public static int WIDTH = ResourceMgr.bulletU.getWidth(), HEIGHT = ResourceMgr.bulletU.getHeight();
 	
-	private int x, y;
 	private Dir dir;
 	boolean living = true;
 	private GameModle gm = null;
@@ -26,9 +24,10 @@ public class Bullet {
 		rectangle.y = this.y;
 		rectangle.width = WIDTH;
 		rectangle.height = HEIGHT;
-		gm.bullets.add(this);
+		gm.addGameObject(this);
 	}
-	
+
+	@Override
 	public void paint(Graphics g) {
 	    if (!living) {
             saveRemove();
@@ -54,7 +53,7 @@ public class Bullet {
 	}
 
     private void saveRemove() {
-        gm.bullets.removeIf(this::equals);
+        gm.removeGameObject(this);
     }
 
     private void move() {
@@ -83,9 +82,9 @@ public class Bullet {
         rectangle.height = HEIGHT;
 	}
 
-    public void collideWith(Tank tank) {
+    public boolean collideWith(Tank tank) {
         if (this.group.equals(tank.getGroup())) {
-            return;
+            return false;
         }
         // 每次碰撞都要创建，将retangle 放到创建坦克和子弹到地方，当子弹销毁的时候 rectangle 即销毁
 //        Rectangle br = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
@@ -95,8 +94,10 @@ public class Bullet {
             tank.die();
             int eX = tank.getX() + Tank.WIDTH/2 - Explode.WIDTH/2;
             int eY = tank.getY() + Tank.HEIGHT/2 - Explode.HEIGHT/2;
-            gm.explodes.add(new Explode(eX, eY, gm));
+            gm.addGameObject(new Explode(eX, eY, gm));
+            return true;
         }
+        return false;
     }
 
     private void die() {

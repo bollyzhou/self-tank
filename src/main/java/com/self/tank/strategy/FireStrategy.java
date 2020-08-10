@@ -1,4 +1,6 @@
-package com.self.tank;
+package com.self.tank.strategy;
+
+import com.self.tank.Tank;
 
 /**
  * @Author: ZST

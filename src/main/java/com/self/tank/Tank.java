@@ -1,5 +1,9 @@
 package com.self.tank;
 
+import com.self.tank.strategy.DefaultFireStrategy;
+import com.self.tank.strategy.FireStrategy;
+import com.self.tank.strategy.FourDirFireStrategy;
+
 import java.awt.*;
 import java.util.Random;
 
@@ -7,9 +11,8 @@ import java.util.Random;
  * @Author: ZST
  * @Date: 2020/7/8
  */
-public class Tank {
+public class Tank extends GameObject {
     public static int WIDTH = ResourceMgr.goodTankU.getWidth(), HEIGHT = ResourceMgr.goodTankU.getHeight();
-    int x, y;
     private Dir dir = Dir.DOWN;
     private static final int BAD_SPEED = 1;
     private static final int GOOD_SPEED = 10;
@@ -31,19 +34,19 @@ public class Tank {
     }
 
     public int getX() {
-        return x;
+        return super.x;
     }
 
     public void setX(int x) {
-        this.x = x;
+        super.x = x;
     }
 
     public int getY() {
-        return y;
+        return super.y;
     }
 
     public void setY(int y) {
-        this.y = y;
+        super.y = y;
     }
 
     public GameModle getGm() {
@@ -98,9 +101,10 @@ public class Tank {
         }
     }
 
+    @Override
     public void paint(Graphics g) {
         if (!living) {
-            gm.enemyTanks.remove(this);
+            gm.removeGameObject(this);
         }
         switch (dir) {
             case LEFT:
