@@ -12,8 +12,6 @@ import java.awt.event.WindowEvent;
  */
 public class TankFram extends Frame {
     static final int GAME_WIDTH = 1080, GAME_HEIGHT = 800;
-    GameModle gm = new GameModle();
-
     public TankFram() {
         setResizable(false);
         setVisible(true);
@@ -33,7 +31,7 @@ public class TankFram extends Frame {
 
     @Override
     public void paint(Graphics g) {
-        gm.paint(g);
+        GameModle.getInstance().paint(g);
     }
 
     Image offScreenImage = null;
@@ -98,7 +96,7 @@ public class TankFram extends Frame {
                     bD = false;
                     break;
                 case KeyEvent.VK_CONTROL:
-                    gm.getMainTank().fire();
+                    GameModle.getInstance().getMainTank().fire();
                     break;
                 default:
                     break;
@@ -108,20 +106,20 @@ public class TankFram extends Frame {
 
         private void setMainTankDir() {
             if (!bL && !bU && !bR && !bD) {
-                gm.getMainTank().setMoving(false);
+                GameModle.getInstance().getMainTank().setMoving(false);
             } else {
-                gm.getMainTank().setMoving(true);
+                GameModle.getInstance().getMainTank().setMoving(true);
                 if (bU) {
-                    gm.getMainTank().setDir(Dir.UP);
+                    GameModle.getInstance().getMainTank().setDir(Dir.UP);
                 }
                 if (bL) {
-                    gm.getMainTank().setDir(Dir.LEFT);
+                    GameModle.getInstance().getMainTank().setDir(Dir.LEFT);
                 }
                 if (bD) {
-                    gm.getMainTank().setDir(Dir.DOWN);
+                    GameModle.getInstance().getMainTank().setDir(Dir.DOWN);
                 }
                 if (bR) {
-                    gm.getMainTank().setDir(Dir.RIGHT);
+                    GameModle.getInstance().getMainTank().setDir(Dir.RIGHT);
                 }
             }
         }

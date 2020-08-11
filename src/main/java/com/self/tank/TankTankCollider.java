@@ -4,7 +4,7 @@ package com.self.tank;
  * @Author: ZST
  * @Date: 2020/8/10
  */
-public class TankTankCollide implements Collide {
+public class TankTankCollider implements Collider {
     @Override
     public boolean collide(GameObject gameObject1, GameObject gameObject2) {
         if (gameObject1 instanceof Tank && gameObject2 instanceof Tank)  {

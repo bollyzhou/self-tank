@@ -12,19 +12,36 @@ import java.util.Objects;
  */
 public class GameModle {
 
-    Tank myTank = new Tank(400, 500, Dir.UP, Group.GOOD, this);
-//    List<Bullet> bullets = new ArrayList<>();
-//    List<Tank> enemyTanks = new ArrayList<>();
-//    List<Explode> explodes = new ArrayList<>();
+    Tank myTank;
     private List<GameObject> gameObjects = new ArrayList<>();
-    private CollideChain collideChain = new CollideChain();
+    private ColliderChain colliderChain = new ColliderChain();
+    private static final GameModle INSTANCE = new GameModle();
 
 
-    public GameModle() {
+    static {
+        INSTANCE.init();
+    }
+
+
+    private GameModle() {}
+
+    public static GameModle getInstance() {
+        return INSTANCE;
+    }
+
+    private void init() {
+        myTank = new Tank(400, 500, Dir.UP, Group.GOOD);
         int count = Integer.valueOf((String) Objects.requireNonNull(PropertyMgr.getValue("enemy.tank.count")));
         for (int i = 0; i < count; i++) {
-            gameObjects.add(new Tank(200 + i * 100, 200, Dir.DOWN, Group.BAD, this));
+            gameObjects.add(new Tank(200 + i * 100, 200, Dir.DOWN, Group.BAD));
         }
+        // 初始化墙
+        addGameObject(new Wall(150, 150, 200, 50));
+        addGameObject(new Wall(550, 150, 200, 50));
+        addGameObject(new Wall(300, 300, 50, 200));
+        addGameObject(new Wall(550, 300, 50, 200));
+        colliderChain.add(new TankWallCollider());
+        colliderChain.add(new BulletWallCollider());
     }
 
 
@@ -36,68 +53,25 @@ public class GameModle {
 //        g.drawString("炸弹的数量:" + enemyTanks.size(), 10, 100);
         g.setColor(c);
         myTank.paint(g);
-        for (GameObject gameObject : gameObjects) {
-            gameObject.paint(g);
+        for (int i = 0; i < gameObjects.size(); i++) {
+            gameObjects.get(i).paint(g);
         }
-//        for (Tank t : enemyTanks) {
-//            t.paint(g);
-//        }
-//        for (Bullet b : bullets) {
-//            b.paint(g);
-//        }
-//        for (Explode explode : explodes) {
-//            explode.paint(g);
-//        }
-        // 子弹是否打中坦克
-//        for (Bullet bullet : bullets) {
-//            for (Tank enemyTank : enemyTanks) {
-//                bullet.collideWith(enemyTank);
-//            }
-//        }
         for (int i = 0; i < gameObjects.size(); i++) {
             for (int j = i + 1; j < gameObjects.size(); j++) {
-                collideChain.collide(gameObjects.get(i), gameObjects.get(j));
+                colliderChain.collide(gameObjects.get(i), gameObjects.get(j));
             }
         }
-
-//        // 消除内存占用
-//        bullets.removeIf(b -> !b.living);
-
     }
     public Tank getMainTank() {
         return myTank;
     }
 
     public void addGameObject(GameObject gameObject) {
-        this.gameObjects.add(gameObject);
+        gameObjects.add(gameObject);
     }
 
     public void removeGameObject(GameObject gameObject) {
-        this.gameObjects.remove(gameObject);
+        gameObjects.remove(gameObject);
     }
 
-
-//    public List<Bullet> getBullets() {
-//        return bullets;
-//    }
-//
-//    public void setBullets(List<Bullet> bullets) {
-//        this.bullets = bullets;
-//    }
-//
-//    public List<Tank> getEnemyTanks() {
-//        return enemyTanks;
-//    }
-//
-//    public void setEnemyTanks(List<Tank> enemyTanks) {
-//        this.enemyTanks = enemyTanks;
-//    }
-//
-//    public List<Explode> getExplodes() {
-//        return explodes;
-//    }
-//
-//    public void setExplodes(List<Explode> explodes) {
-//        this.explodes = explodes;
-//    }
 }

@@ -17,12 +17,12 @@ public class Tank extends GameObject {
     private static final int BAD_SPEED = 1;
     private static final int GOOD_SPEED = 10;
     private boolean moving = true;
-    GameModle gm = null;
     private boolean living = true;
     private Group group;
     private Random random = new Random();
     Rectangle rectangle = new Rectangle();
     FireStrategy fs;
+    private int oldX, oldY;
 
 
     public Group getGroup() {
@@ -49,14 +49,6 @@ public class Tank extends GameObject {
         super.y = y;
     }
 
-    public GameModle getGm() {
-        return gm;
-    }
-
-    public void setGm(GameModle gm) {
-        this.gm = gm;
-    }
-
     public Dir getDir() {
         return dir;
     }
@@ -81,13 +73,12 @@ public class Tank extends GameObject {
         this.rectangle = rectangle;
     }
 
-    public Tank(int x, int y, Dir dir, Group group, GameModle gm) {
+    public Tank(int x, int y, Dir dir, Group group) {
         super();
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.group = group;
-        this.gm = gm;
 
         rectangle.x = this.x;
         rectangle.y = this.y;
@@ -104,7 +95,7 @@ public class Tank extends GameObject {
     @Override
     public void paint(Graphics g) {
         if (!living) {
-            gm.removeGameObject(this);
+            GameModle.getInstance().removeGameObject(this);
         }
         switch (dir) {
             case LEFT:
@@ -129,6 +120,8 @@ public class Tank extends GameObject {
         if (!moving) {
             return;
         }
+        oldX = x;
+        oldY = y;
         if (group.equals(Group.GOOD)) {
            changeSpeed(GOOD_SPEED);
         } else {
@@ -195,5 +188,10 @@ public class Tank extends GameObject {
 
     public void die() {
         this.living = false;
+    }
+
+    public void back() {
+        x = oldX;
+        y = oldY;
     }
 }

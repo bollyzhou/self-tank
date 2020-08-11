@@ -8,23 +8,21 @@ public class Bullet extends GameObject {
 	
 	private Dir dir;
 	boolean living = true;
-	private GameModle gm = null;
 	private Group group;
 
 	Rectangle rectangle = new Rectangle();
 
-    public Bullet(int x, int y, Dir dir, Group group, GameModle gm) {
+    public Bullet(int x, int y, Dir dir, Group group) {
 		this.x = x;
 		this.y = y;
 		this.group = group;
-		this.gm = gm;
 		this.dir = dir;
 
 		rectangle.x = this.x;
 		rectangle.y = this.y;
 		rectangle.width = WIDTH;
 		rectangle.height = HEIGHT;
-		gm.addGameObject(this);
+        GameModle.getInstance().addGameObject(this);
 	}
 
 	@Override
@@ -53,7 +51,7 @@ public class Bullet extends GameObject {
 	}
 
     private void saveRemove() {
-        gm.removeGameObject(this);
+        GameModle.getInstance().removeGameObject(this);
     }
 
     private void move() {
@@ -94,13 +92,13 @@ public class Bullet extends GameObject {
             tank.die();
             int eX = tank.getX() + Tank.WIDTH/2 - Explode.WIDTH/2;
             int eY = tank.getY() + Tank.HEIGHT/2 - Explode.HEIGHT/2;
-            gm.addGameObject(new Explode(eX, eY, gm));
+            GameModle.getInstance().addGameObject(new Explode(eX, eY));
             return true;
         }
         return false;
     }
 
-    private void die() {
+    public void die() {
         this.living = false;
     }
 }
