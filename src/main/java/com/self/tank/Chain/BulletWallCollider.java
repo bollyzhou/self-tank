@@ -1,5 +1,9 @@
-package com.self.tank;
+package com.self.tank.Chain;
 
+
+import com.self.tank.Bullet;
+import com.self.tank.GameObject;
+import com.self.tank.Wall;
 
 public class BulletWallCollider implements Collider {
 
@@ -10,7 +14,7 @@ public class BulletWallCollider implements Collider {
 			Wall w = (Wall)o2;
 			
 			
-			if(b.rectangle.intersects(w.rect)) {
+			if(b.getRectangle().intersects(w.rect)) {
 				b.die();
 			}
 			

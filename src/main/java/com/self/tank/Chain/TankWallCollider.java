@@ -1,4 +1,8 @@
-package com.self.tank;
+package com.self.tank.Chain;
+
+import com.self.tank.GameObject;
+import com.self.tank.Tank;
+import com.self.tank.Wall;
 
 public class TankWallCollider implements Collider {
 
@@ -9,7 +13,7 @@ public class TankWallCollider implements Collider {
 			Wall w = (Wall)o2;
 			
 			
-			if(t.rectangle.intersects(w.rect)) {
+			if(t.getRectangle().intersects(w.rect)) {
 				t.back();
 			}
 			

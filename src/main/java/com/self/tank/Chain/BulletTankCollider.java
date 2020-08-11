@@ -1,4 +1,8 @@
-package com.self.tank;
+package com.self.tank.Chain;
+
+import com.self.tank.Bullet;
+import com.self.tank.GameObject;
+import com.self.tank.Tank;
 
 /**
  * @Author: ZST

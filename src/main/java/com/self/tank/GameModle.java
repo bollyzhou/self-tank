@@ -1,5 +1,9 @@
 package com.self.tank;
 
+import com.self.tank.Chain.BulletWallCollider;
+import com.self.tank.Chain.ColliderChain;
+import com.self.tank.Chain.TankWallCollider;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;

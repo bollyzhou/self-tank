@@ -101,4 +101,12 @@ public class Bullet extends GameObject {
     public void die() {
         this.living = false;
     }
+
+    public Rectangle getRectangle() {
+        return rectangle;
+    }
+
+    public void setRectangle(Rectangle rectangle) {
+        this.rectangle = rectangle;
+    }
 }

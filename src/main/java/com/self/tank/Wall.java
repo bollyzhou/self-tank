@@ -26,5 +26,12 @@ public class Wall extends GameObject {
 		g.fillRect(x, y, w, h);
 		g.setColor(c);
 	}
-	
+
+    public Rectangle getRect() {
+        return rect;
+    }
+
+    public void setRect(Rectangle rect) {
+        this.rect = rect;
+    }
 }
